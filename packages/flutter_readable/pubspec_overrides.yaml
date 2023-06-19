@@ -1,0 +1,4 @@
+# melos_managed_dependency_overrides: readable
+dependency_overrides:
+  readable:
+    path: ../readable

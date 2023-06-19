@@ -1,0 +1,27 @@
+name: readable_workspace
+repository: https://github.com/maxzod/readable
+
+packages:
+  - packages/**
+command:
+  bootstrap:
+    runPubGetInParallel: false
+scripts:
+  lint:
+    run: melos run format && melos run analyze
+
+  analyze:
+    run: |
+      melos exec -c 1 -- \
+          dart analyze . --fatal-infos
+  format:
+    run: melos exec -c 1 -- \
+      flutter format .
+  test:
+    run: |
+      melos exec -c 1 --dir-exists="test" --ignore="*example*" --fail-fast -- \
+        "flutter test"
+  test_coverage:
+    run: |
+      melos exec -c 1 --dir-exists="test" --fail-fast -- \
+        "flutter test --coverage "

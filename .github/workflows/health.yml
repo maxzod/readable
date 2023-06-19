@@ -1,0 +1,43 @@
+#The name of your workflow.
+name: check
+# Trigger the workflow on push or pull request
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          flutter-version: "3.7.7"
+
+      - name: Activate melos latest and bootstrap
+        run: flutter pub global activate melos && melos bs
+      - name: run the builder runner
+        run: melos run build
+      - name: check format
+        run: melos run format
+      - name: check lint
+        run: melos run analyze
+      - name: check test coverage
+        run: melos run test_coverage
+
+      - name: test coverage (readable)
+        uses: VeryGoodOpenSource/very_good_coverage@v2
+        with:
+          path: "packages/readable/coverage/lcov.info"
+          min_coverage: 100
+      - name: test coverage (flutter_readable)
+        uses: VeryGoodOpenSource/very_good_coverage@v2
+        with:
+          path: "packages/flutter_readable/coverage/lcov.info"
+          min_coverage: 83 
