@@ -37,9 +37,7 @@
     final h1 = Theme.of(context).textTheme.headline1;
     /// After::
     final h1 = context.headline1;
-    /// or
-    final h1 = context.h1;
- }
+  }
 ```
 
 ```dart
